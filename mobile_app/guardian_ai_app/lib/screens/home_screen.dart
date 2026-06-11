@@ -4,6 +4,7 @@ import 'sos_screen.dart';
 import 'sos_history_screen.dart';
 import 'journey_screen.dart';
 import 'journey_history_screen.dart';
+import 'alert_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -82,6 +83,19 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               child: const Text("SOS History"),
+            ),
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+
+                  MaterialPageRoute(builder: (context) => const AlertScreen()),
+                );
+              },
+
+              child: const Text("Safety Alerts"),
             ),
           ],
         ),

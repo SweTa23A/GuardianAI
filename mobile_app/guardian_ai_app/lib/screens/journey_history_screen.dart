@@ -56,12 +56,28 @@ class _JourneyHistoryScreenState extends State<JourneyHistoryScreen> {
                         journeys[index]["_id"],
                       );
 
-                      loadJourneys();
+                      await loadJourneys();
                     },
 
                     child: const Text("Mark Safe"),
                   )
-                : const Text("COMPLETED"),
+                : journeys[index]["status"] == "OVERDUE"
+                ? const Text(
+                    "OVERDUE",
+
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                : const Text(
+                    "COMPLETED",
+
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
           );
         },
       ),

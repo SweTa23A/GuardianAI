@@ -3,7 +3,8 @@ const express = require("express");
 const {
     startJourney,
     getJourneyHistory,
-    completeJourney
+    completeJourney,
+    markOverdueJourneys
 } = require(
     "../controllers/journeyController"
 );
@@ -24,6 +25,11 @@ router.post(
 router.post(
     "/complete",
     completeJourney
+);
+
+router.post(
+    "/check-overdue",
+    markOverdueJourneys
 );
 
 module.exports = router;

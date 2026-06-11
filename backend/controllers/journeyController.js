@@ -1,4 +1,6 @@
 const Journey = require("../models/Journey");
+const SOS =
+    require("../models/SOS");
 
 const startJourney = async (req, res) => {
 
@@ -102,8 +104,80 @@ const completeJourney = async (req, res) => {
 
 };
 
+const markOverdueJourneys = async (req, res) => {
+
+    try {
+
+        const journeys =
+            await Journey.find({
+
+                status: "ACTIVE"
+
+            });
+
+        for (const journey of journeys) {
+
+            const expectedTime =
+                journey.expectedArrivalTime;
+
+            const now =
+                new Date();
+
+            const currentHour =
+                now.getHours();
+
+            const journeyHour =
+                parseInt(
+                    expectedTime.split(":")[0]
+                );
+
+            if (
+    currentHour >
+    journeyHour
+) {
+
+    journey.status =
+        "OVERDUE";
+
+    await journey.save();
+
+    await SOS.create({
+
+        email:
+            journey.email,
+
+        message:
+            "Automatic SOS - Journey Overdue"
+
+    });
+
+}
+
+        }
+
+        res.status(200).json({
+
+            message:
+                "Overdue check completed"
+
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+
+            message:
+                error.message
+
+        });
+
+    }
+
+};
+
 module.exports = {
     startJourney,
     getJourneyHistory,
-    completeJourney
+    completeJourney,
+    markOverdueJourneys
 };
